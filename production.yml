@@ -1,0 +1,27 @@
+version: '3.6'
+
+volumes:
+  django_uploads: {}
+
+services:
+#  this is an admin-only service
+  flask: &flask
+    container_name: flask_server
+    # image: "gcr.io/the-helper-bees/hbcrm/flask-helloworld:${TAG}"
+    image: "https://hub.docker.com/r/digitalocean/flask-helloworld:latest"
+    # build:
+    #   context: .
+    #   dockerfile: ./compose/django/production/Dockerfile3.8
+    #   args:
+    #     git_ssh_key: $GIT_SSH_KEY
+    #     artifact_registry_password: $ARTIFACT_REGISTRY_PASSWORD 
+    # volumes:
+    #   - django_uploads:/app/hbcrm/upload
+    # user: django
+    # command: /start.sh
+
+  admin_flask:
+    <<: *flask
+    image: "https://hub.docker.com/r/digitalocean/flask-helloworld:latest"
+    # image: "gcr.io/the-helper-bees/hbcrm/admin-django:${TAG}"
+

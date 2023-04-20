@@ -1,0 +1,43 @@
+version: '3.6'
+
+services:
+#  this is an admin-only service
+#  this is an admin-only service
+  nifi: &nifi
+    container_name: flask_server
+    # image: "gcr.io/the-helper-bees/hbcrm/flask-helloworld:${TAG}"
+    image: "https://hub.docker.com/r/digitalocean/flask-helloworld:latest"
+    env_file:
+    - './.envs/.${ENVIRONMENT}/.flask'
+    environment:
+    - SENTRY_VERSION
+    - ENVIRONMENT
+    - VERSION_TAG=${TAG:-}
+    - ALLOW_ADMIN_URLS=0
+    networks:
+    - localnetwork
+    - core-infra
+    volumes:
+    - /cloudsql:/cloudsql
+    # secrets:
+    # - MY_SAMPLE_PASSWORD
+    
+  # admin_flask:
+  #   <<: *flask
+  #   image: "https://hub.docker.com/r/digitalocean/flask-helloworld:latest"
+  #   # image: "gcr.io/the-helper-bees/hbcrm/admin-django:${TAG}"
+  #   environment:
+  #     - SENTRY_VERSION
+  #     - ENVIRONMENT
+  #     - VERSION_TAG=${TAG:-}
+  #     - ALLOW_ADMIN_URLS=1
+    
+networks:
+  core-infra:
+    external: true
+  localnetwork:
+    attachable: true
+
+# secrets:
+#   MY_SAMPLE_PASSWORD:
+#     external: true
